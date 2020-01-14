@@ -26,6 +26,14 @@ class LoginCest
             ]
         ];
     }
+
+    protected function formParams($login, $password)
+    {
+        return [
+            'LoginForm[username]' => $login,
+            'LoginForm[password]' => $password,
+        ];
+    }
     
     /**
      * @param FunctionalTester $I
@@ -33,11 +41,9 @@ class LoginCest
     public function loginUser(FunctionalTester $I)
     {
         $I->amOnPage('/site/login');
-        $I->fillField('Username', 'erau');
-        $I->fillField('Password', 'password_0');
-        $I->click('login-button');
+        $I->submitForm('#login-form', $this->formParams('erau', 'password_0'));
 
-        $I->see('Logout (erau)', 'form button[type=submit]');
+        $I->see('Sign out', 'a');
         $I->dontSeeLink('Login');
         $I->dontSeeLink('Signup');
     }
